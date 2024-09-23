@@ -2,18 +2,17 @@ const { parse } = require('csv-parse');
 const fs = require('fs');
 const path = require('path');
 
-const results = [];
-
 function isHabitable(planet) {
   return (
-    planet['koi_desposition'] === 'CONFIRMED' &&
-    planet['koi_insol'] > 0.36 &&
-    planet['koi_insol'] < 1.11 &&
-    planet['koi_prad'] < 1.6
+    planet['koi_disposition'] === 'CONFIRMED' &&
+    Number(planet['koi_insol']) > 0.36 &&
+    Number(planet['koi_insol']) < 1.11 &&
+    Number(planet['koi_prad']) < 1.6
   );
 }
 
 function loadPlanetsData() {
+  const results = [];
   return new Promise((resolve, reject) => {
     fs.createReadStream(
       path.join(__dirname, '..', '..', 'data', 'kepler_data.csv')
@@ -41,11 +40,17 @@ function loadPlanetsData() {
           })
         );
         console.log('Done.');
-        resolve();
+
+        resolve(results);
       });
   });
 }
 
+function getAllPlanets() {
+  return results;
+}
+
 module.exports = {
   loadPlanetsData,
+  getAllPlanets,
 };
