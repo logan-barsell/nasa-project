@@ -11,8 +11,9 @@ function isHabitable(planet) {
   );
 }
 
+const results = [];
+
 function loadPlanetsData() {
-  const results = [];
   return new Promise((resolve, reject) => {
     fs.createReadStream(
       path.join(__dirname, '..', '..', 'data', 'kepler_data.csv')
@@ -40,13 +41,13 @@ function loadPlanetsData() {
           })
         );
         console.log('Done.');
-
-        resolve(results);
+        resolve();
       });
   });
 }
 
 function getAllPlanets() {
+  console.log(results);
   return results;
 }
 
